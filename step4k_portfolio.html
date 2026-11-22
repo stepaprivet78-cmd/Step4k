@@ -1,0 +1,1364 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Step4k — Разработка сайтов и Telegram Mini Apps</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #070709;
+      --surface: #111115;
+      --surface-hover: #17171d;
+      --border: #22222b;
+      --border-strong: #32323f;
+      --accent: #e30613;
+      --accent-hover: #ff1e2d;
+      --accent-glow: rgba(227, 6, 19, 0.25);
+      --accent-soft: rgba(227, 6, 19, 0.12);
+      --text: #f4f4f5;
+      --muted: #9898a6;
+      --success: #22c55e;
+      --success-bg: rgba(34, 197, 94, 0.12);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      background-color: var(--bg);
+      color: var(--text);
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      line-height: 1.55;
+      overflow-x: hidden;
+      background-image:
+        radial-gradient(circle at 80% 0%, rgba(227, 6, 19, 0.12) 0%, transparent 40%),
+        radial-gradient(circle at 10% 35%, rgba(227, 6, 19, 0.06) 0%, transparent 35%);
+    }
+
+    .mono {
+      font-family: 'JetBrains Mono', monospace;
+    }
+
+    .container {
+      max-width: 1120px;
+      margin: 0 auto;
+      padding: 0 20px;
+    }
+
+    /* Навигация */
+    .navbar {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: rgba(7, 7, 9, 0.82);
+      backdrop-filter: blur(14px);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .nav-inner {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      height: 70px;
+      gap: 16px;
+    }
+
+    .logo {
+      font-size: 20px;
+      font-weight: 900;
+      letter-spacing: -0.5px;
+      color: var(--text);
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      gap: 2px;
+    }
+
+    .logo span {
+      color: var(--accent);
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 28px;
+    }
+
+    .nav-links a {
+      color: var(--muted);
+      text-decoration: none;
+      font-size: 14px;
+      font-weight: 500;
+      transition: color 0.2s;
+    }
+
+    .nav-links a:hover {
+      color: var(--text);
+    }
+
+    @media (max-width: 720px) {
+      .nav-links {
+        display: none;
+      }
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      padding: 12px 22px;
+      border-radius: 12px;
+      font-size: 14px;
+      font-weight: 700;
+      text-decoration: none;
+      cursor: pointer;
+      border: 1px solid transparent;
+      transition: all 0.2s ease;
+    }
+
+    .btn-primary {
+      background: var(--accent);
+      color: #ffffff;
+      box-shadow: 0 6px 24px var(--accent-glow);
+    }
+
+    .btn-primary:hover {
+      background: var(--accent-hover);
+      transform: translateY(-1px);
+      box-shadow: 0 10px 28px rgba(227, 6, 19, 0.38);
+    }
+
+    .btn-outline {
+      background: var(--surface);
+      color: var(--text);
+      border-color: var(--border-strong);
+    }
+
+    .btn-outline:hover {
+      border-color: var(--accent);
+      background: var(--surface-hover);
+    }
+
+    .btn-sm {
+      padding: 9px 16px;
+      font-size: 13px;
+    }
+
+    /* Hero */
+    .hero {
+      padding: 88px 0 64px;
+    }
+
+    .status-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: var(--surface);
+      border: 1px solid var(--border-strong);
+      padding: 6px 14px;
+      border-radius: 99px;
+      font-size: 12px;
+      color: var(--muted);
+      margin-bottom: 24px;
+    }
+
+    .status-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--success);
+      box-shadow: 0 0 10px var(--success);
+    }
+
+    .hero h1 {
+      font-size: clamp(36px, 6vw, 64px);
+      font-weight: 900;
+      line-height: 1.06;
+      letter-spacing: -2px;
+      max-width: 860px;
+      margin-bottom: 20px;
+    }
+
+    .hero h1 .accent-text {
+      color: var(--accent);
+    }
+
+    .hero-sub {
+      font-size: clamp(16px, 2vw, 19px);
+      color: var(--muted);
+      max-width: 620px;
+      margin-bottom: 34px;
+    }
+
+    .hero-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-bottom: 56px;
+    }
+
+    .metrics-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
+      border-top: 1px solid var(--border);
+      padding-top: 28px;
+    }
+
+    @media (max-width: 640px) {
+      .hero { padding: 56px 0 40px; }
+      .metrics-grid { grid-template-columns: 1fr; gap: 12px; }
+    }
+
+    .metric-item {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 18px 20px;
+    }
+
+    .metric-val {
+      font-size: 22px;
+      font-weight: 800;
+      margin-bottom: 4px;
+    }
+
+    .metric-val span {
+      color: var(--accent);
+    }
+
+    .metric-label {
+      font-size: 13px;
+      color: var(--muted);
+    }
+
+    /* Секции */
+    section {
+      padding: 64px 0;
+    }
+
+    .section-header {
+      margin-bottom: 34px;
+    }
+
+    .section-tag {
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+      color: var(--accent);
+      font-weight: 700;
+      margin-bottom: 8px;
+      display: block;
+    }
+
+    .section-title {
+      font-size: clamp(26px, 4vw, 38px);
+      font-weight: 900;
+      letter-spacing: -1px;
+    }
+
+    /* Услуги */
+    .services-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 20px;
+    }
+
+    @media (max-width: 760px) {
+      .services-grid { grid-template-columns: 1fr; }
+    }
+
+    .service-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 22px;
+      padding: 30px;
+      transition: border-color 0.2s, transform 0.2s;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    .service-card:hover {
+      border-color: var(--accent);
+      transform: translateY(-3px);
+    }
+
+    .service-num {
+      font-size: 12px;
+      color: var(--accent);
+      font-weight: 700;
+      margin-bottom: 14px;
+    }
+
+    .service-card h3 {
+      font-size: 22px;
+      font-weight: 800;
+      margin-bottom: 10px;
+      letter-spacing: -0.5px;
+    }
+
+    .service-card p {
+      font-size: 14px;
+      color: var(--muted);
+      margin-bottom: 20px;
+    }
+
+    .service-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      margin-bottom: 24px;
+    }
+
+    .service-list li {
+      font-size: 13px;
+      color: #d4d4d8;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .service-list li::before {
+      content: "▸";
+      color: var(--accent);
+      font-weight: 900;
+    }
+
+    .service-price {
+      font-size: 15px;
+      font-weight: 700;
+      padding-top: 16px;
+      border-top: 1px solid var(--border);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    /* Портфолио */
+    .featured-case {
+      background: var(--surface);
+      border: 1px solid var(--border-strong);
+      border-radius: 24px;
+      padding: 32px;
+      display: grid;
+      grid-template-columns: 1.15fr 0.85fr;
+      gap: 32px;
+      align-items: center;
+      margin-bottom: 20px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .featured-case::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 3px;
+      background: linear-gradient(90deg, var(--accent), transparent);
+    }
+
+    @media (max-width: 820px) {
+      .featured-case {
+        grid-template-columns: 1fr;
+        padding: 22px;
+      }
+    }
+
+    .case-badges {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-bottom: 14px;
+    }
+
+    .badge {
+      font-size: 11px;
+      font-weight: 700;
+      padding: 4px 10px;
+      border-radius: 8px;
+      background: var(--bg);
+      border: 1px solid var(--border-strong);
+      color: var(--muted);
+    }
+
+    .badge-red {
+      background: var(--accent-soft);
+      border-color: rgba(227, 6, 19, 0.35);
+      color: #ff4d58;
+    }
+
+    .featured-case h3 {
+      font-size: 28px;
+      font-weight: 900;
+      letter-spacing: -0.8px;
+      margin-bottom: 12px;
+    }
+
+    .featured-case p {
+      font-size: 15px;
+      color: var(--muted);
+      margin-bottom: 20px;
+    }
+
+    .case-features {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      margin-bottom: 24px;
+    }
+
+    @media (max-width: 500px) {
+      .case-features { grid-template-columns: 1fr; }
+    }
+
+    .case-feat {
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 10px 12px;
+      font-size: 13px;
+      font-weight: 600;
+    }
+
+    /* Мокап интерфейса */
+    .phone-mockup {
+      background: #0b0b0e;
+      border: 1px solid var(--border-strong);
+      border-radius: 24px;
+      padding: 16px;
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.6);
+    }
+
+    .mockup-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding-bottom: 12px;
+      margin-bottom: 12px;
+      border-bottom: 1px solid var(--border);
+      font-size: 11px;
+      color: var(--muted);
+    }
+
+    .mockup-brand {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-weight: 800;
+      color: var(--text);
+      font-size: 13px;
+    }
+
+    .mockup-logo {
+      width: 24px;
+      height: 24px;
+      border-radius: 7px;
+      background: var(--accent);
+      color: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 10px;
+      font-weight: 900;
+    }
+
+    .mockup-card {
+      background: #16161c;
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 12px;
+      margin-bottom: 10px;
+    }
+
+    .mockup-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 12px;
+      margin-bottom: 6px;
+    }
+
+    .mockup-row:last-child {
+      margin-bottom: 0;
+    }
+
+    .mockup-stamps {
+      display: flex;
+      gap: 6px;
+      margin-top: 8px;
+    }
+
+    .m-stamp {
+      width: 24px;
+      height: 24px;
+      border-radius: 50%;
+      background: var(--accent);
+      color: #fff;
+      font-size: 11px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .m-stamp.empty {
+      background: transparent;
+      border: 1px dashed var(--border-strong);
+      color: var(--muted);
+    }
+
+    .mockup-tg-toast {
+      background: rgba(34, 197, 94, 0.12);
+      border: 1px solid rgba(34, 197, 94, 0.35);
+      color: #86efac;
+      border-radius: 12px;
+      padding: 10px 12px;
+      font-size: 11px;
+      line-height: 1.4;
+    }
+
+    .sub-cases {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 20px;
+    }
+
+    @media (max-width: 720px) {
+      .sub-cases { grid-template-columns: 1fr; }
+    }
+
+    .mini-case {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      padding: 24px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      gap: 16px;
+    }
+
+    .mini-case h4 {
+      font-size: 19px;
+      font-weight: 800;
+      margin-bottom: 6px;
+    }
+
+    .mini-case p {
+      font-size: 14px;
+      color: var(--muted);
+    }
+
+    /* Калькулятор + форма заявки */
+    .calc-grid {
+      display: grid;
+      grid-template-columns: 1.25fr 1fr;
+      gap: 22px;
+      align-items: start;
+    }
+
+    @media (max-width: 860px) {
+      .calc-grid { grid-template-columns: 1fr; }
+    }
+
+    .panel {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 22px;
+      padding: 28px;
+    }
+
+    @media (max-width: 540px) {
+      .panel { padding: 20px; }
+    }
+
+    .calc-label {
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      color: var(--muted);
+      font-weight: 700;
+      margin-bottom: 12px;
+    }
+
+    .type-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px;
+      margin-bottom: 26px;
+    }
+
+    @media (max-width: 580px) {
+      .type-grid { grid-template-columns: 1fr; }
+    }
+
+    .type-btn {
+      background: var(--bg);
+      border: 1.5px solid var(--border);
+      border-radius: 14px;
+      padding: 16px 14px;
+      color: var(--text);
+      text-align: left;
+      cursor: pointer;
+      transition: all 0.15s ease;
+    }
+
+    .type-btn:hover {
+      border-color: var(--border-strong);
+    }
+
+    .type-btn.active {
+      border-color: var(--accent);
+      background: var(--accent-soft);
+    }
+
+    .type-name {
+      font-size: 14px;
+      font-weight: 800;
+      margin-bottom: 4px;
+      display: block;
+    }
+
+    .type-price {
+      font-size: 12px;
+      color: var(--muted);
+      display: block;
+    }
+
+    .type-btn.active .type-price {
+      color: #ff4d58;
+      font-weight: 700;
+    }
+
+    .addons-list {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .addon-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: var(--bg);
+      border: 1.5px solid var(--border);
+      border-radius: 14px;
+      padding: 13px 16px;
+      cursor: pointer;
+      transition: all 0.15s;
+      user-select: none;
+    }
+
+    .addon-item:hover {
+      border-color: var(--border-strong);
+    }
+
+    .addon-item.checked {
+      border-color: var(--accent);
+      background: var(--accent-soft);
+    }
+
+    .addon-left {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-size: 14px;
+      font-weight: 600;
+    }
+
+    .addon-left input {
+      accent-color: var(--accent);
+      width: 17px;
+      height: 17px;
+      cursor: pointer;
+    }
+
+    .addon-cost {
+      font-size: 13px;
+      color: var(--muted);
+      font-weight: 700;
+      white-space: nowrap;
+      margin-left: 10px;
+    }
+
+    /* Итог калькулятора */
+    .summary-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      margin-bottom: 8px;
+    }
+
+    .summary-price {
+      font-size: 36px;
+      font-weight: 900;
+      letter-spacing: -1.5px;
+    }
+
+    .summary-days {
+      display: inline-block;
+      background: var(--accent-soft);
+      color: #ff4d58;
+      font-size: 12px;
+      font-weight: 700;
+      padding: 5px 12px;
+      border-radius: 99px;
+      margin-bottom: 18px;
+    }
+
+    .divider {
+      height: 1px;
+      background: var(--border);
+      margin: 16px 0 20px;
+    }
+
+    .form-group {
+      margin-bottom: 12px;
+    }
+
+    .form-input {
+      width: 100%;
+      background: var(--bg);
+      border: 1.5px solid var(--border);
+      border-radius: 12px;
+      padding: 12px 14px;
+      color: var(--text);
+      font-size: 14px;
+      font-family: inherit;
+      outline: none;
+      transition: border-color 0.2s;
+    }
+
+    .form-input:focus {
+      border-color: var(--accent);
+    }
+
+    textarea.form-input {
+      resize: vertical;
+      min-height: 82px;
+    }
+
+    .submit-full {
+      width: 100%;
+      padding: 15px;
+      font-size: 15px;
+      margin-top: 4px;
+    }
+
+    .form-status {
+      display: none;
+      margin-top: 14px;
+      padding: 14px;
+      border-radius: 12px;
+      font-size: 13px;
+      text-align: center;
+      line-height: 1.45;
+    }
+
+    .form-status.ok {
+      display: block;
+      background: var(--success-bg);
+      border: 1px solid rgba(34, 197, 94, 0.4);
+      color: #86efac;
+    }
+
+    .form-status.err {
+      display: block;
+      background: var(--accent-soft);
+      border: 1px solid rgba(227, 6, 19, 0.4);
+      color: #fca5a5;
+    }
+
+    /* Этапы работы */
+    .steps-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 16px;
+    }
+
+    @media (max-width: 820px) {
+      .steps-grid { grid-template-columns: repeat(2, 1fr); }
+    }
+
+    @media (max-width: 480px) {
+      .steps-grid { grid-template-columns: 1fr; }
+    }
+
+    .step-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      padding: 22px;
+    }
+
+    .step-num {
+      font-size: 13px;
+      color: var(--accent);
+      font-weight: 700;
+      margin-bottom: 10px;
+    }
+
+    .step-card h4 {
+      font-size: 16px;
+      font-weight: 800;
+      margin-bottom: 6px;
+    }
+
+    .step-card p {
+      font-size: 13px;
+      color: var(--muted);
+    }
+
+    /* Футер */
+    footer {
+      border-top: 1px solid var(--border);
+      padding: 32px 0 40px;
+      margin-top: 40px;
+    }
+
+    .footer-inner {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: center;
+      gap: 16px;
+      font-size: 13px;
+      color: var(--muted);
+    }
+
+    .footer-tg {
+      color: var(--text);
+      font-weight: 700;
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+
+    .footer-tg:hover {
+      color: var(--accent);
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Навигация -->
+  <header class="navbar">
+    <div class="container nav-inner">
+      <a href="#" class="logo mono">STEP4K<span>_</span></a>
+      <nav class="nav-links">
+        <a href="#services">Услуги</a>
+        <a href="#projects">Проекты</a>
+        <a href="#calculator">Калькулятор</a>
+        <a href="#process">Этапы</a>
+      </nav>
+      <a href="https://t.me/Stepan4k_JR" target="_blank" rel="noopener noreferrer" class="btn btn-primary btn-sm">
+        Написать в TG ↗
+      </a>
+    </div>
+  </header>
+
+  <main>
+    <!-- Главный экран -->
+    <section class="hero">
+      <div class="container">
+        <div class="status-pill mono">
+          <span class="status-dot"></span>
+          Степан (Step4k) · Открыт к новым проектам
+        </div>
+
+        <h1>
+          Сайты и <span class="accent-text">Telegram Mini Apps</span>, которые приносят заявки
+        </h1>
+
+        <p class="hero-sub">
+          Собираю быстрые лендинги и встроенные приложения в Telegram под ключ: с корзиной, оплатой по СБП, программой лояльности и мгновенными чеками в ваш чат.
+        </p>
+
+        <div class="hero-actions">
+          <a href="#calculator" class="btn btn-primary">Рассчитать стоимость</a>
+          <a href="https://t.me/Stepan4k_JR" target="_blank" rel="noopener noreferrer" class="btn btn-outline">
+            Обсудить в Telegram (@Stepan4k_JR)
+          </a>
+        </div>
+
+        <div class="metrics-grid">
+          <div class="metric-item">
+            <div class="metric-val mono">от <span>3 дней</span></div>
+            <div class="metric-label">Быстрый запуск без лишней бюрократии</div>
+          </div>
+          <div class="metric-item">
+            <div class="metric-val mono"><span>0 ₽</span> / мес</div>
+            <div class="metric-label">Хостинг и бот без ежемесячных подписок на конструкторы</div>
+          </div>
+          <div class="metric-item">
+            <div class="metric-val mono"><span>100%</span> Mobile</div>
+            <div class="metric-label">Идеальная вёрстка под телефоны и Telegram WebApp</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Услуги -->
+    <section id="services">
+      <div class="container">
+        <div class="section-header">
+          <span class="section-tag mono">// Направления</span>
+          <h2 class="section-title">Что я делаю</h2>
+        </div>
+
+        <div class="services-grid">
+          <div class="service-card">
+            <div>
+              <div class="service-num mono">01 / TELEGRAM MINI APPS</div>
+              <h3>Приложения внутри Telegram</h3>
+              <p>Полноценный магазин, предзаказ или онлайн-запись прямо внутри вашего Telegram-бота. Клиенту не нужно скачивать приложение или регистрироваться.</p>
+              <ul class="service-list">
+                <li>Автоподстановка имени и @username из Telegram</li>
+                <li>Корзина, выбор опций, промокоды и карта лояльности</li>
+                <li>Оплата по СБП (QR-код + прямая ссылка в банк)</li>
+                <li>Мгновенные чеки с номером заказа бариста / менеджеру</li>
+              </ul>
+            </div>
+            <div class="service-price">
+              <span class="mono" style="color: var(--muted);">Стоимость</span>
+              <span class="mono">от 7 000 ₽</span>
+            </div>
+          </div>
+
+          <div class="service-card">
+            <div>
+              <div class="service-num mono">02 / WEB DEVELOPMENT</div>
+              <h3>Сайты и лендинги под ключ</h3>
+              <p>Чистые, быстрые и современные сайты для бизнеса и личных брендов. Дизайн подбирается под задачу: от строгого минимализма до дерзких тёмных концептов.</p>
+              <ul class="service-list">
+                <li>Продающая структура и аккуратная типографика</li>
+                <li>Интерактивные калькуляторы стоимости услуг</li>
+                <li>Формы заявок с прямой отправкой в Telegram</li>
+                <li>Запуск на хостинге и базовая SEO-настройка</li>
+              </ul>
+            </div>
+            <div class="service-price">
+              <span class="mono" style="color: var(--muted);">Стоимость</span>
+              <span class="mono">от 5 000 ₽</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Портфолио -->
+    <section id="projects">
+      <div class="container">
+        <div class="section-header">
+          <span class="section-tag mono">// Портфолио</span>
+          <h2 class="section-title">Живые работы</h2>
+        </div>
+
+        <!-- Главный кейс: Coffee Like -->
+        <div class="featured-case">
+          <div>
+            <div class="case-badges mono">
+              <span class="badge badge-red">Telegram Mini App</span>
+              <span class="badge">HoReCa / Кофейня</span>
+              <span class="badge">СБП + Лояльность</span>
+            </div>
+            <h3>Coffee Like — Предзаказ кофе</h3>
+            <p>
+              Полностью рабочее веб-приложение для предзаказа кофе с собой без очереди. Интегрировано в Telegram-бота: гость собирает напиток, применяет скидку или бесплатный 6-й стакан, оплачивает по СБП, а бариста получает структурированный чек с номером заказа.
+            </p>
+
+            <div class="case-features">
+              <div class="case-feat">☕ Конструктор напитков и допов</div>
+              <div class="case-feat">🎁 Карта лояльности (5+1)</div>
+              <div class="case-feat">🏷 Промокоды и пересчёт чека</div>
+              <div class="case-feat">🔥 Номера заказов для бариста</div>
+            </div>
+
+            <a href="https://stepaprivet78-cmd.github.io/coffee-calc/" target="_blank" rel="noopener noreferrer" class="btn btn-primary">
+              Открыть живое демо ↗
+            </a>
+          </div>
+
+          <!-- Интерактивный превью-мокап -->
+          <div class="phone-mockup">
+            <div class="mockup-bar mono">
+              <div class="mockup-brand">
+                <div class="mockup-logo">CL</div>
+                COFFEE LIKE
+              </div>
+              <span>Mini App</span>
+            </div>
+
+            <div class="mockup-card">
+              <div class="mockup-row">
+                <span style="color: var(--muted);">Карта лояльности</span>
+                <span class="mono" style="color: var(--accent); font-weight: 700;">4 / 5</span>
+              </div>
+              <div class="mockup-stamps">
+                <div class="m-stamp">☕</div>
+                <div class="m-stamp">☕</div>
+                <div class="m-stamp">☕</div>
+                <div class="m-stamp">☕</div>
+                <div class="m-stamp empty">5</div>
+                <div class="m-stamp empty" style="border-color: #fbbf24; color: #fbbf24;">🎁</div>
+              </div>
+            </div>
+
+            <div class="mockup-card">
+              <div class="mockup-row">
+                <strong>Раф Малина-кокос (350 мл)</strong>
+                <strong class="mono">475 ₽</strong>
+              </div>
+              <div class="mockup-row" style="color: var(--muted); font-size: 11px;">
+                <span>Кокосовое молоко · 1 стик</span>
+                <span style="color: #22c55e;">−10% COFFEE10</span>
+              </div>
+            </div>
+
+            <div class="mockup-tg-toast mono">
+              🔥 <b>ЗАКАЗ #482</b> (14:20)<br>
+              Написать на стакане: #482 · Иван<br>
+              💳 Оплата по СБП подтверждена
+            </div>
+          </div>
+        </div>
+
+        <!-- Дополнительные карточки -->
+        <div class="sub-cases">
+          <div class="mini-case">
+            <div>
+              <div class="case-badges mono">
+                <span class="badge">Интерактив</span>
+                <span class="badge">Telegram API</span>
+              </div>
+              <h4>Калькулятор стоимости услуг</h4>
+              <p>Живой инструмент для расчёта цены прямо на сайте с мгновенной отправкой выбранных опций в Telegram. Попробуйте его в действии прямо в блоке ниже.</p>
+            </div>
+            <div>
+              <a href="#calculator" class="btn btn-outline btn-sm">Протестировать ↓</a>
+            </div>
+          </div>
+
+          <div class="mini-case" style="border-style: dashed; border-color: var(--border-strong);">
+            <div>
+              <div class="case-badges mono">
+                <span class="badge badge-red">Бесплатный тест</span>
+                <span class="badge">24 часа</span>
+              </div>
+              <h4>Ваш проект может быть здесь</h4>
+              <p>Напишите мне задачу — я бесплатно соберу демо-версию первого экрана или мини-прототип под ваш бизнес, чтобы вы оценили результат до оплаты.</p>
+            </div>
+            <div>
+              <a href="https://t.me/Stepan4k_JR" target="_blank" rel="noopener noreferrer" class="btn btn-primary btn-sm">
+                Заказать прототип ↗
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Интерактивный калькулятор + заявка -->
+    <section id="calculator">
+      <div class="container">
+        <div class="section-header">
+          <span class="section-tag mono">// Расчёт проекта</span>
+          <h2 class="section-title">Калькулятор стоимости</h2>
+        </div>
+
+        <div class="calc-grid">
+          <!-- Левая часть: выбор параметров -->
+          <div class="panel">
+            <div class="calc-label mono">1. Что нужно разработать?</div>
+            <div class="type-grid" id="typeGrid">
+              <button type="button" class="type-btn" data-name="Лендинг / Сайт-визитка" data-price="5000" data-days="3">
+                <span class="type-name">Лендинг / Сайт</span>
+                <span class="type-price mono">от 5 000 ₽</span>
+              </button>
+              <button type="button" class="type-btn active" data-name="Telegram Mini App" data-price="7000" data-days="4">
+                <span class="type-name">Telegram Mini App</span>
+                <span class="type-price mono">от 7 000 ₽</span>
+              </button>
+              <button type="button" class="type-btn" data-name="Сайт + Telegram Mini App" data-price="10500" data-days="6">
+                <span class="type-name">Сайт + Mini App</span>
+                <span class="type-price mono">от 10 500 ₽</span>
+              </button>
+            </div>
+
+            <div class="calc-label mono">2. Дополнительные модули</div>
+            <div class="addons-list">
+              <label class="addon-item checked">
+                <div class="addon-left">
+                  <input type="checkbox" class="calc-addon" data-name="Заявки и чеки в Telegram-бота" data-price="0" data-days="0" checked>
+                  <span>Уведомления о заявках в Telegram</span>
+                </div>
+                <span class="addon-cost mono" style="color: var(--success);">Включено</span>
+              </label>
+
+              <label class="addon-item">
+                <div class="addon-left">
+                  <input type="checkbox" class="calc-addon" data-name="Корзина и каталог товаров/услуг" data-price="2500" data-days="1">
+                  <span>Корзина и каталог товаров / услуг</span>
+                </div>
+                <span class="addon-cost mono">+2 500 ₽</span>
+              </label>
+
+              <label class="addon-item">
+                <div class="addon-left">
+                  <input type="checkbox" class="calc-addon" data-name="Оплата по СБП (QR + ссылка)" data-price="1500" data-days="1">
+                  <span>Оплата по СБП (QR-код и ссылка)</span>
+                </div>
+                <span class="addon-cost mono">+1 500 ₽</span>
+              </label>
+
+              <label class="addon-item">
+                <div class="addon-left">
+                  <input type="checkbox" class="calc-addon" data-name="Промокоды и карта лояльности" data-price="2000" data-days="1">
+                  <span>Промокоды и карта лояльности</span>
+                </div>
+                <span class="addon-cost mono">+2 000 ₽</span>
+              </label>
+
+              <label class="addon-item">
+                <div class="addon-left">
+                  <input type="checkbox" class="calc-addon" data-name="Интерактивный калькулятор цены" data-price="2000" data-days="1">
+                  <span>Интерактивный калькулятор на сайт</span>
+                </div>
+                <span class="addon-cost mono">+2 000 ₽</span>
+              </label>
+            </div>
+          </div>
+
+          <!-- Правая часть: итог и форма -->
+          <div class="panel">
+            <div class="calc-label mono">Ориентировочная смета</div>
+            <div class="summary-top">
+              <span style="font-size: 14px; color: var(--muted);">Итого:</span>
+              <span class="summary-price mono" id="totalPrice">7 000 ₽</span>
+            </div>
+            <div class="summary-days mono" id="totalDays">⏱ Срок: ~4 дня</div>
+
+            <div class="divider"></div>
+
+            <form id="leadForm">
+              <div class="form-group">
+                <input type="text" class="form-input" id="leadName" placeholder="Ваше имя" required>
+              </div>
+              <div class="form-group">
+                <input type="text" class="form-input" id="leadContact" placeholder="Ваш Telegram (@username) или телефон" required>
+              </div>
+              <div class="form-group">
+                <textarea class="form-input" id="leadComment" placeholder="Коротко о проекте (ниша, пожелания, примеры)..."></textarea>
+              </div>
+              <button type="submit" class="btn btn-primary submit-full" id="leadSubmitBtn">
+                Отправить заявку Степану
+              </button>
+            </form>
+            <div class="form-status" id="formStatus"></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Этапы работы -->
+    <section id="process">
+      <div class="container">
+        <div class="section-header">
+          <span class="section-tag mono">// Как строится работа</span>
+          <h2 class="section-title">4 простых шага</h2>
+        </div>
+
+        <div class="steps-grid">
+          <div class="step-card">
+            <div class="step-num mono">01 //</div>
+            <h4>Обсуждаем задачу</h4>
+            <p>Списываемся в Telegram, фиксируем функционал, стиль и точную стоимость без скрытых доплат.</p>
+          </div>
+          <div class="step-card">
+            <div class="step-num mono">02 //</div>
+            <h4>Собираю прототип</h4>
+            <p>Быстро делаю первую рабочую версию, вы кликаете её прямо со своего телефона и вносите правки.</p>
+          </div>
+          <div class="step-card">
+            <div class="step-num mono">03 //</div>
+            <h4>Подключаю логику</h4>
+            <p>Привязываю Telegram-бота, уведомления о заказах, реквизиты СБП и проверяю работу на всех экранах.</p>
+          </div>
+          <div class="step-card">
+            <div class="step-num mono">04 //</div>
+            <h4>Запуск и передача</h4>
+            <p>Выкладываю проект на хостинг, подключаю кнопку в боте и объясняю, как легко менять цены или текст.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="container footer-inner">
+      <div class="mono">STEP4K<span style="color: var(--accent);">_</span> · Степан · 2026</div>
+      <div>
+        Связь напрямую:
+        <a href="https://t.me/Stepan4k_JR" target="_blank" rel="noopener noreferrer" class="footer-tg mono">@Stepan4k_JR ↗</a>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    // =========================================================
+    // НАСТРОЙКА TELEGRAM-БОТА ДЛЯ ПОЛУЧЕНИЯ ЗАЯВОК С ПОРТФОЛИО
+    // =========================================================
+    const TG_BOT_TOKEN = '9001602913:AAEWhqSBoJGS8FjQLMDLS-aENsts5YST_1Y';
+    const TG_CHAT_ID = '7882574148';
+
+    const typeBtns = document.querySelectorAll('.type-btn');
+    const addonCheckboxes = document.querySelectorAll('.calc-addon');
+    const totalPriceEl = document.getElementById('totalPrice');
+    const totalDaysEl = document.getElementById('totalDays');
+    const leadForm = document.getElementById('leadForm');
+    const leadSubmitBtn = document.getElementById('leadSubmitBtn');
+    const formStatus = document.getElementById('formStatus');
+
+    let selectedType = {
+      name: 'Telegram Mini App',
+      price: 7000,
+      days: 4
+    };
+
+    let currentTotal = 7000;
+    let currentDays = 4;
+
+    function getNoun(n, one, two, five) {
+      let num = Math.abs(n) % 100;
+      if (num >= 5 && num <= 20) return five;
+      num %= 10;
+      if (num === 1) return one;
+      if (num >= 2 && num <= 4) return two;
+      return five;
+    }
+
+    function escapeHtml(text) {
+      return text
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;');
+    }
+
+    function updateCalc() {
+      let total = selectedType.price;
+      let days = selectedType.days;
+
+      addonCheckboxes.forEach(cb => {
+        const parent = cb.closest('.addon-item');
+        if (cb.checked) {
+          parent.classList.add('checked');
+          total += parseInt(cb.dataset.price, 10);
+          days += parseInt(cb.dataset.days, 10);
+        } else {
+          parent.classList.remove('checked');
+        }
+      });
+
+      currentTotal = total;
+      currentDays = days;
+
+      totalPriceEl.textContent = total.toLocaleString('ru-RU') + ' ₽';
+      totalDaysEl.textContent = `⏱ Срок: ~${days} ${getNoun(days, 'день', 'дня', 'дней')}`;
+    }
+
+    typeBtns.forEach(btn => {
+      btn.addEventListener('click', () => {
+        typeBtns.forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        selectedType = {
+          name: btn.dataset.name,
+          price: parseInt(btn.dataset.price, 10),
+          days: parseInt(btn.dataset.days, 10)
+        };
+        updateCalc();
+      });
+    });
+
+    addonCheckboxes.forEach(cb => {
+      cb.addEventListener('change', updateCalc);
+    });
+
+    leadForm.addEventListener('submit', async (e) => {
+      e.preventDefault();
+
+      const name = document.getElementById('leadName').value.trim();
+      const contact = document.getElementById('leadContact').value.trim();
+      const comment = document.getElementById('leadComment').value.trim();
+
+      const selectedAddons = [];
+      addonCheckboxes.forEach(cb => {
+        if (cb.checked) selectedAddons.push(cb.dataset.name);
+      });
+
+      const addonsText = selectedAddons.length
+        ? selectedAddons.map(a => `  • ${escapeHtml(a)}`).join('\n')
+        : '  • Без доп. модулей';
+
+      const commentLine = comment ? `📝 <b>Комментарий:</b> ${escapeHtml(comment)}\n` : '';
+
+      const message =
+        `🚀 <b>НОВАЯ ЗАЯВКА С ПОРТФОЛИО (STEP4K)</b>\n` +
+        `━━━━━━━━━━━━━━━━━━\n` +
+        `👤 <b>Клиент:</b> ${escapeHtml(name)}\n` +
+        `📱 <b>Контакт:</b> ${escapeHtml(contact)}\n` +
+        `💻 <b>Формат:</b> ${escapeHtml(selectedType.name)}\n` +
+        `⚙️ <b>Модули:</b>\n${addonsText}\n` +
+        commentLine +
+        `━━━━━━━━━━━━━━━━━━\n` +
+        `💰 <b>Расчёт:</b> ~${currentTotal.toLocaleString('ru-RU')} ₽ (~${currentDays} дн.)`;
+
+      leadSubmitBtn.disabled = true;
+      leadSubmitBtn.textContent = 'Отправляем заявку...';
+      formStatus.className = 'form-status';
+
+      try {
+        const res = await fetch(`https://api.telegram.org/bot${TG_BOT_TOKEN}/sendMessage`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            chat_id: TG_CHAT_ID,
+            text: message,
+            parse_mode: 'HTML'
+          })
+        });
+
+        const data = await res.json();
+
+        if (data.ok) {
+          formStatus.className = 'form-status ok';
+          formStatus.innerHTML = '✅ <b>Заявка отправлена!</b><br>Я получил расчёт в Telegram и скоро свяжусь с вами.';
+          leadForm.reset();
+        } else {
+          throw new Error(data.description || 'Telegram API error');
+        }
+      } catch (err) {
+        formStatus.className = 'form-status err';
+        formStatus.innerHTML = '❌ Не удалось отправить через форму. Напишите напрямую в Telegram: <a href="https://t.me/Stepan4k_JR" target="_blank" style="color:#fff; text-decoration:underline;">@Stepan4k_JR</a>';
+      } finally {
+        leadSubmitBtn.disabled = false;
+        leadSubmitBtn.textContent = 'Отправить заявку Степану';
+      }
+    });
+
+    updateCalc();
+  </script>
+</body>
+</html>
