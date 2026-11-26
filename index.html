@@ -74,6 +74,17 @@
         ::-webkit-scrollbar-thumb:hover {
             background: #e30613;
         }
+
+        /* Scroll reveal animation */
+        .reveal {
+            opacity: 0;
+            transform: translateY(24px);
+            transition: opacity 0.65s cubic-bezier(0.16, 1, 0.3, 1), transform 0.65s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .reveal.is-visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
     </style>
 </head>
 <body class="bg-darkBg text-zinc-200 antialiased selection:bg-accentRed selection:text-white bg-grid-pattern min-h-screen flex flex-col justify-between">
@@ -94,17 +105,34 @@
                 <a href="#process" class="hover:text-white transition">Этапы</a>
             </nav>
 
-            <!-- Telegram CTA Button -->
-            <div class="flex items-center space-x-4">
+            <!-- Telegram CTA Button & Mobile Menu Trigger -->
+            <div class="flex items-center space-x-3">
                 <a href="https://t.me/Stepan4k_JR" target="_blank" rel="noopener noreferrer" 
-                   class="inline-flex items-center gap-2 bg-accentRed hover:bg-accentRedHover text-white text-sm font-semibold px-5 py-2.5 rounded-xl transition-all duration-200 transform hover:-translate-y-0.5 glow-red-sm">
+                   class="inline-flex items-center gap-2 bg-accentRed hover:bg-accentRedHover text-white text-xs sm:text-sm font-semibold px-4 sm:px-5 py-2.5 rounded-xl transition-all duration-200 transform hover:-translate-y-0.5 glow-red-sm">
                     <span>Написать в TG</span>
                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/>
                     </svg>
                 </a>
+                <button type="button" id="mobileMenuBtn" aria-label="Открыть меню"
+                        class="md:hidden inline-flex items-center justify-center p-2.5 rounded-xl bg-darkSurface border border-darkBorder text-zinc-300 hover:text-white hover:border-zinc-700 transition">
+                    <svg id="menuIconOpen" class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
+                    </svg>
+                    <svg id="menuIconClose" class="w-5 h-5 hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+                    </svg>
+                </button>
             </div>
         </div>
+
+        <!-- Mobile Nav Drawer -->
+        <nav id="mobileMenu" class="hidden md:hidden border-t border-darkBorder bg-darkBg/95 backdrop-blur-xl px-4 py-4 space-y-1">
+            <a href="#services" class="mobile-nav-link block px-4 py-3 rounded-xl text-sm font-medium text-zinc-300 hover:text-white hover:bg-darkSurface transition">Услуги</a>
+            <a href="#projects" class="mobile-nav-link block px-4 py-3 rounded-xl text-sm font-medium text-zinc-300 hover:text-white hover:bg-darkSurface transition">Проекты</a>
+            <a href="#calculator" class="mobile-nav-link block px-4 py-3 rounded-xl text-sm font-medium text-zinc-300 hover:text-white hover:bg-darkSurface transition">Калькулятор</a>
+            <a href="#process" class="mobile-nav-link block px-4 py-3 rounded-xl text-sm font-medium text-zinc-300 hover:text-white hover:bg-darkSurface transition">Этапы</a>
+        </nav>
     </header>
 
     <!-- HERO SECTION -->
@@ -253,8 +281,115 @@
 
             <div class="space-y-12">
 
+                <!-- FEATURED CASE 0: SOUL DETAILING (COMMERCIAL FLAGSHIP) -->
+                <div class="reveal p-6 sm:p-10 rounded-3xl bg-darkSurface border border-darkBorder hover:border-zinc-700 transition duration-300 grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
+                    
+                    <!-- Left: Details -->
+                    <div class="lg:col-span-7 flex flex-col justify-between">
+                        <div>
+                            <!-- Badges -->
+                            <div class="flex flex-wrap items-center gap-2 mb-4">
+                                <span class="px-3 py-1 rounded-full text-xs font-mono font-bold bg-accentRed text-white">
+                                    Коммерческий кейс
+                                </span>
+                                <span class="px-3 py-1 rounded-full text-xs font-mono font-semibold bg-darkCard border border-darkBorder text-zinc-300">
+                                    Автобизнес / Детейлинг СПб
+                                </span>
+                                <span class="px-3 py-1 rounded-full text-xs font-mono font-semibold bg-darkCard border border-amber-500/30 text-amber-400">
+                                    В доработке
+                                </span>
+                            </div>
+
+                            <h3 class="text-2xl sm:text-3xl font-bold text-white mb-3">
+                                Соул Детейлинг — Сайт студии детейлинга
+                            </h3>
+
+                            <p class="text-zinc-400 text-sm leading-relaxed mb-6">
+                                Премиальный тёмный сайт для студии детейлинга автомобилей и мототехники в Санкт-Петербурге. Спроектирован с акцентом на конверсию: структурированный каталог из 8 услуг, живой виджет отзывов с Яндекс Карт (5.0), блок этапов работы, FAQ и форма быстрого расчёта стоимости.
+                            </p>
+
+                            <!-- Feature Pills -->
+                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5 mb-8">
+                                <div class="px-3.5 py-2 rounded-xl bg-darkCard border border-darkBorder text-xs text-zinc-300 font-medium">
+                                    🚘 Каталог 8 направлений услуг
+                                </div>
+                                <div class="px-3.5 py-2 rounded-xl bg-darkCard border border-darkBorder text-xs text-zinc-300 font-medium">
+                                    ⭐ Виджет отзывов Яндекс Карт (5.0)
+                                </div>
+                                <div class="px-3.5 py-2 rounded-xl bg-darkCard border border-darkBorder text-xs text-zinc-300 font-medium">
+                                    📍 Маршрут в Яндекс Навигатор
+                                </div>
+                                <div class="px-3.5 py-2 rounded-xl bg-darkCard border border-darkBorder text-xs text-zinc-300 font-medium">
+                                    📩 Форма расчёта стоимости и FAQ
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="flex flex-wrap items-center gap-3">
+                            <a href="#calculator" 
+                               class="inline-flex items-center gap-2 px-6 py-3.5 bg-accentRed hover:bg-accentRedHover text-white text-sm font-bold rounded-xl transition glow-red-sm">
+                                <span>Заказать похожий сайт</span>
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
+                            </a>
+                            <a href="https://t.me/Stepan4k_JR" target="_blank" rel="noopener noreferrer"
+                               class="inline-flex items-center gap-2 px-5 py-3.5 bg-darkCard border border-darkBorder hover:border-zinc-600 text-zinc-200 text-sm font-semibold rounded-xl transition">
+                                <span>Обсудить в TG</span>
+                            </a>
+                        </div>
+                    </div>
+
+                    <!-- Right: Sleek Dark Mockup (Soul Detailing UI) -->
+                    <div class="lg:col-span-5">
+                        <div class="w-full rounded-2xl bg-[#0e0f12] border border-zinc-800 p-4 shadow-2xl relative overflow-hidden">
+                            <!-- Browser Header -->
+                            <div class="flex items-center justify-between pb-3 mb-3 border-b border-zinc-800 text-xs font-mono text-zinc-400">
+                                <span class="flex items-center gap-1.5 font-bold text-white tracking-wider">
+                                    <span class="w-2 h-2 rounded-full bg-zinc-200"></span>
+                                    СОУЛ ДЕТЕЙЛИНГ
+                                </span>
+                                <span class="text-[11px] text-zinc-500">СПб · Премиум</span>
+                            </div>
+
+                            <!-- Hero Preview Card -->
+                            <div class="p-4 rounded-xl bg-gradient-to-br from-slate-900 via-zinc-900 to-black border border-zinc-800 mb-3">
+                                <div class="text-[10px] font-mono uppercase tracking-widest text-zinc-400 mb-1">Санкт-Петербург</div>
+                                <div class="text-sm font-bold text-white leading-snug mb-2">Детейлинг автомобилей и мототехники</div>
+                                <div class="flex gap-2">
+                                    <span class="px-2.5 py-1 rounded-md bg-white text-black text-[10px] font-bold">Запросить расчёт</span>
+                                    <span class="px-2.5 py-1 rounded-md border border-zinc-700 text-zinc-300 text-[10px] font-medium">Смотреть работы</span>
+                                </div>
+                            </div>
+
+                            <!-- Services Mini Grid -->
+                            <div class="grid grid-cols-2 gap-2 mb-3 text-[11px]">
+                                <div class="p-2.5 rounded-lg bg-zinc-900/90 border border-zinc-800 text-zinc-300">
+                                    <div class="text-[10px] font-mono text-zinc-500">01</div>
+                                    <div class="font-semibold text-white">Защитная оклейка</div>
+                                </div>
+                                <div class="p-2.5 rounded-lg bg-zinc-900/90 border border-zinc-800 text-zinc-300">
+                                    <div class="text-[10px] font-mono text-zinc-500">03</div>
+                                    <div class="font-semibold text-white">Полировка и керамика</div>
+                                </div>
+                            </div>
+
+                            <!-- Yandex Reviews Badge -->
+                            <div class="p-3 rounded-xl bg-zinc-900/90 border border-amber-500/30 text-xs flex items-center justify-between">
+                                <div class="flex items-center gap-2.5">
+                                    <span class="text-lg font-black text-white font-mono">5,0</span>
+                                    <div>
+                                        <div class="text-amber-400 text-[11px] tracking-tighter">★★★★★</div>
+                                        <div class="text-[10px] text-zinc-400">Отзывы на Яндекс Картах</div>
+                                    </div>
+                                </div>
+                                <span class="text-[10px] font-mono text-emerald-400 bg-emerald-500/10 border border-emerald-500/30 px-2 py-0.5 rounded">LIVE</span>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
                 <!-- FEATURED CASE 1: COFFEE LIKE -->
-                <div class="p-6 sm:p-10 rounded-3xl bg-darkSurface border border-darkBorder hover:border-zinc-700 transition duration-300 grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
+                <div class="reveal p-6 sm:p-10 rounded-3xl bg-darkSurface border border-darkBorder hover:border-zinc-700 transition duration-300 grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
                     
                     <!-- Left: Details -->
                     <div class="lg:col-span-7 flex flex-col justify-between">
@@ -356,7 +491,7 @@
                 </div>
 
                 <!-- FEATURED CASE 2: FC HUB (NEW) -->
-                <div class="p-6 sm:p-10 rounded-3xl bg-darkSurface border border-darkBorder hover:border-fcLime/30 transition duration-300 grid grid-cols-1 lg:grid-cols-12 gap-8 items-center relative overflow-hidden">
+                <div class="reveal p-6 sm:p-10 rounded-3xl bg-darkSurface border border-darkBorder hover:border-fcLime/30 transition duration-300 grid grid-cols-1 lg:grid-cols-12 gap-8 items-center relative overflow-hidden">
                     
                     <!-- Left: Details -->
                     <div class="lg:col-span-7 flex flex-col justify-between">
@@ -463,9 +598,45 @@
                 </div>
 
                 <!-- SUB-CASES GRID -->
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
-                    <!-- Sub-case 1 -->
-                    <div class="p-8 rounded-3xl bg-darkSurface border border-darkBorder flex flex-col justify-between">
+                <div class="reveal grid grid-cols-1 md:grid-cols-2 gap-8">
+                    <!-- Sub-case 1: Museum 397 -->
+                    <div class="p-8 rounded-3xl bg-darkSurface border border-darkBorder hover:border-zinc-700 transition flex flex-col justify-between">
+                        <div>
+                            <span class="text-xs font-mono text-zinc-500 uppercase tracking-widest">Имиджевый сайт</span>
+                            <h4 class="text-xl font-bold text-white mt-1 mb-2">Музей 397 — Цифровая экспозиция</h4>
+                            <p class="text-zinc-400 text-sm mb-6 leading-relaxed">
+                                Атмосферный контентный веб-сайт с продуманной типографикой, плавной навигацией и полной адаптивностью под смартфоны и ПК.
+                            </p>
+                        </div>
+                        <div>
+                            <a href="https://stepaprivet78-cmd.github.io/museum-397/" target="_blank" rel="noopener noreferrer"
+                               class="inline-flex items-center gap-2 text-sm font-bold text-accentRed hover:text-white transition">
+                                <span>Открыть живое демо</span>
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg>
+                            </a>
+                        </div>
+                    </div>
+
+                    <!-- Sub-case 2: Sacred Noir Parry Strike -->
+                    <div class="p-8 rounded-3xl bg-darkSurface border border-darkBorder hover:border-zinc-700 transition flex flex-col justify-between">
+                        <div>
+                            <span class="text-xs font-mono text-zinc-500 uppercase tracking-widest">Интерактив & GameDev</span>
+                            <h4 class="text-xl font-bold text-white mt-1 mb-2">Sacred Noir: Parry Strike</h4>
+                            <p class="text-zinc-400 text-sm mb-6 leading-relaxed">
+                                Динамичная браузерная 2D-игра на Canvas с кастомными эффектами, отзывчивым тач-управлением под смартфон и сохранением прогресса.
+                            </p>
+                        </div>
+                        <div>
+                            <a href="https://stepaprivet78-cmd.github.io/Sacred-Noir-Parry-Strike/" target="_blank" rel="noopener noreferrer"
+                               class="inline-flex items-center gap-2 text-sm font-bold text-accentRed hover:text-white transition">
+                                <span>Запустить в браузере</span>
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg>
+                            </a>
+                        </div>
+                    </div>
+
+                    <!-- Sub-case 3: Interactive Calculator -->
+                    <div class="p-8 rounded-3xl bg-darkSurface border border-darkBorder hover:border-zinc-700 transition flex flex-col justify-between">
                         <div>
                             <span class="text-xs font-mono text-zinc-500 uppercase tracking-widest">Интерактивный инструмент</span>
                             <h4 class="text-xl font-bold text-white mt-1 mb-2">Калькулятор стоимости услуг</h4>
@@ -481,14 +652,14 @@
                         </div>
                     </div>
 
-                    <!-- Sub-case 2 -->
+                    <!-- Sub-case 4: CTA Card -->
                     <div class="p-8 rounded-3xl bg-darkSurface/40 border border-dashed border-darkBorder flex flex-col justify-between">
                         <div>
                             <div class="flex items-center gap-2 mb-2">
                                 <span class="w-2 h-2 rounded-full bg-accentRed"></span>
                                 <span class="text-xs font-mono text-accentRed uppercase font-bold tracking-wider">Ваш проект может быть здесь</span>
                             </div>
-                            <h4 class="text-xl font-bold text-white mb-2">Готовы запустить продающий Mini App?</h4>
+                            <h4 class="text-xl font-bold text-white mb-2">Готовы запустить продающий сайт или Mini App?</h4>
                             <p class="text-zinc-400 text-sm mb-6">
                                 Подготовлю интерактивный прототип и составлю смету под ваши бизнес-задачи за 24 часа.
                             </p>
@@ -836,7 +1007,7 @@
                 `📱 <b>Контакт:</b> ${contact}\n` +
                 `🛠 <b>Тип проекта:</b> ${selectedTypeName}\n` +
                 `📌 <b>Опции:</b> ${selectedAddons.join(', ')}\n` +
-                `💰 <b>Расчитанная сумма:</b> ${currentPrice.toLocaleString('ru-RU')} ₽ (${currentDays} ${getDaysWord(currentDays)})\n\n` +
+                `💰 <b>Рассчитанная сумма:</b> ${currentPrice.toLocaleString('ru-RU')} ₽ (${currentDays} ${getDaysWord(currentDays)})\n\n` +
                 `💬 <b>Комментарий:</b>\n${comment}`;
 
             // Button loading state
@@ -871,9 +1042,48 @@
                 formStatus.className = 'mt-4 p-4 rounded-xl text-xs font-semibold text-center bg-rose-950/80 border border-rose-500/50 text-rose-200 block';
             } finally {
                 submitBtn.disabled = false;
-                submitBtn.textContent = 'Отправка заявки Степану';
+                submitBtn.textContent = 'Отправить заявку Степану';
             }
         });
+
+        // Mobile menu toggle
+        const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+        const mobileMenu = document.getElementById('mobileMenu');
+        const menuIconOpen = document.getElementById('menuIconOpen');
+        const menuIconClose = document.getElementById('menuIconClose');
+
+        if (mobileMenuBtn && mobileMenu) {
+            mobileMenuBtn.addEventListener('click', () => {
+                const isHidden = mobileMenu.classList.toggle('hidden');
+                menuIconOpen.classList.toggle('hidden', !isHidden);
+                menuIconClose.classList.toggle('hidden', isHidden);
+            });
+
+            document.querySelectorAll('.mobile-nav-link').forEach(link => {
+                link.addEventListener('click', () => {
+                    mobileMenu.classList.add('hidden');
+                    menuIconOpen.classList.remove('hidden');
+                    menuIconClose.classList.add('hidden');
+                });
+            });
+        }
+
+        // Scroll reveal via IntersectionObserver
+        const revealEls = document.querySelectorAll('.reveal');
+        if ('IntersectionObserver' in window) {
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('is-visible');
+                        observer.unobserve(entry.target);
+                    }
+                });
+            }, { threshold: 0.1 });
+
+            revealEls.forEach(el => observer.observe(el));
+        } else {
+            revealEls.forEach(el => el.classList.add('is-visible'));
+        }
 
         // Initialize calculation on load
         calculateTotal();
